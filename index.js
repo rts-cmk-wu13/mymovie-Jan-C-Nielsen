@@ -14,21 +14,20 @@ const options = {
   
 let sectionElm = document.createElement("section");
 
-
-
 function MakeCard(innerHTML, data, className) {
     innerHTML += `
-    <div >
-      <div class="${className}">
+        <div class="${className}">
         ${data.results.map(function(t) {
         return `
-        <div class="${className}__content">
+        <a href="detail.html?id=${t.id}">
+        <article class="${className}__content">
             <img src="https://image.tmdb.org/t/p/w185/${t.poster_path}" class="poster"></img>
             <div>
             <h3>${t.original_title}</h3>
             <p>${t.vote_average}/10 IMDb</p>
             </div>
-        </div>
+        </article>
+            </a>
           `;
     }).join("")}
       </div>
