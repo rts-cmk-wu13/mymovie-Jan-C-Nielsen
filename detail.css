@@ -1,0 +1,5 @@
+.castList {
+    display: flex;
+    overflow-x: scroll;
+    gap: 2rem;
+}
