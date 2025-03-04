@@ -1,0 +1,14 @@
+.nowplaying {
+    display: flex;
+    overflow-x: scroll;
+    gap: 2rem;
+}
+
+.popular {
+    display: block;
+}
+
+.popular__content {
+    display: flex;
+    gap: 2rem;
+}
