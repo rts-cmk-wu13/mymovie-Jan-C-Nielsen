@@ -32,8 +32,47 @@ function genHTML(data, dataCredits) {
     innerHTML += `<img src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
     innerHTML += `<h2>${data.original_title}</h2>`
     innerHTML += `<p> &#x2605;&nbsp;${data.vote_average} / 10</p>`
+    innerHTML = genres(innerHTML, data);
+
+    innerHTML = info(innerHTML, data);
+
+    innerHTML = description(innerHTML, data);
+
+    innerHTML = cast(innerHTML, dataCredits);
+    divElm.innerHTML = innerHTML;
+
+    sectionElm.append(divElm);
+}
+
+function cast(innerHTML, dataCredits) {
+    innerHTML += `<h2>Cast</h2>
+<div class="castList">${dataCredits.cast.map(function(c) {
+        return castCard(c.name, c.profile_path);
+    }
+    ).join("")}</div>
+`;
+    return innerHTML;
+}
+
+function description(innerHTML, data) {
+    innerHTML += `<h2>Description</h2>
+<p>${data.overview}</p>
+`;
+    return innerHTML;
+}
+
+function info(innerHTML, data) {
     innerHTML += `<div>
-    ${data.genres.map(function (t) {
+<span>${data.runtime}<span>
+<span>${data.original_language}<span>
+<span>${data.runtime}<span>
+<div>`;
+    return innerHTML;
+}
+
+function genres(innerHTML, data) {
+    innerHTML += `<div>
+    ${data.genres.map(function(t) {
         return `
         <p>${t.name}</p>
       `;
@@ -41,28 +80,7 @@ function genHTML(data, dataCredits) {
   </div>
 
 `;
-
-    innerHTML += `<div>
-<span>${data.runtime}<span>
-<span>${data.original_language}<span>
-<span>${data.runtime}<span>
-<div>`
-
-
-    innerHTML += `<h2>Description</h2>
-<p>${data.overview}</p>
-`
-
-
-    innerHTML += `<h2>Cast</h2>
-<div class="castList">${dataCredits.cast.map(function (c) {
-        return castCard(c.name, c.profile_path);
-    }
-    ).join("")}</div>
-`
-    divElm.innerHTML = innerHTML;
-
-    sectionElm.append(divElm);
+    return innerHTML;
 }
 
 async function getMovie(apiUrl, urlCredits, options) {

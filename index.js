@@ -14,8 +14,8 @@ const options = {
   
 let sectionElm = document.createElement("section");
 
-function MakeCard(innerHTML, data, className) {
-    innerHTML += `
+function MakeCard(data, className) {
+   let cardHTML = `
         <div class="${className}">
         ${data.results.map(function(t) {
         return `
@@ -33,27 +33,44 @@ function MakeCard(innerHTML, data, className) {
       </div>
     
   `;
-    return innerHTML;
+    return cardHTML;
 };
 
+function addEventListeners() {
+    let switchElm = document.querySelector("#switch");
+    console.log("addEventListeners:" + switchElm);
 
+    switchElm.addEventListener("change", function () {
+        console.log(switchElm.checked);
+    });
 
-function genHTML(dataNowPlaying, dataPopular) {
-
-    let innerHTML = "";
-    console.log(dataNowPlaying);
-    let divElm = document.createElement("div");
-    innerHTML = "<h2>Now showing</h2>"
-    innerHTML = MakeCard(innerHTML, dataNowPlaying, "nowplaying");
-
-    innerHTML += "<h2>Popular</h2>"
-    innerHTML = MakeCard(innerHTML, dataPopular, "popular");
-
-    divElm.innerHTML = innerHTML;
-
-    sectionElm.append(divElm);
 }
 
+async function genHTML(dataNowPlaying, dataPopular) {
+
+    let innerHTMLstr = "";
+    console.log(dataNowPlaying);
+    let divElm = document.createElement("div");
+    innerHTMLstr += `<h1>My movies</h1>
+        <label class="switch" id="switch" >
+            <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>`
+
+    innerHTMLstr += "<h2>Now showing</h2>"
+    innerHTMLstr += MakeCard(dataNowPlaying, "nowplaying");
+
+    innerHTMLstr += "<h2>Popular</h2>"
+    innerHTMLstr += MakeCard(dataPopular, "popular");
+
+    divElm.innerHTML = innerHTMLstr;
+
+    sectionElm.append(divElm);
+    sectionElm.querySelector("#switch").addEventListener("change", function () { console.log("hej") })
+    document.querySelector("body").append(sectionElm);
+}
+
+let switchElm;
 async function getMovies(apiUrl, options) {
     const NowPlaying = "now_playing?language=en-US&page=1";
     const Popular = "popular?language=en-US&page=1";
@@ -62,12 +79,15 @@ async function getMovies(apiUrl, options) {
     let dataNowPlaying = await x.json();
    
     x = await fetch(apiUrl + Popular , options);
-    dataPopular = await x.json();
+    let dataPopular = await x.json();
  
     console.log(dataPopular);
    
-    genHTML(dataNowPlaying, dataPopular);
+    await genHTML(dataNowPlaying, dataPopular);
+  
+    return;
 }
 
 getMovies(url, options);
-document.querySelector("body").append(sectionElm)
+
+

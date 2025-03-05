@@ -1,3 +1,14 @@
+:root {
+    color-scheme: dark light;
+    --dark-color: hsl(0, 0%, 10%);
+    --light-color: hsl(0, 0%, 97%);
+}
+
+html {
+    color: light-dark(var(--dark-color), var(--light-color));
+    background-color: light-dark(var(--light-color), var(--dark-color));
+}
+
 .nowplaying {
     display: flex;
     overflow-x: scroll;
