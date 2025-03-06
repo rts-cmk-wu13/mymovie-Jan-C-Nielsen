@@ -17,6 +17,16 @@ const options = {
 
 let sectionElm = document.createElement("section")
 
+
+function makeSwitch() {
+    let switchHTML = `
+        <label class="switch" id="switch" >
+            <input type="checkbox" id="switchbox" checked>
+                <span class="slider round"></span>
+            </label>`;
+    return switchHTML;
+}
+
 function castCard(name, poster_path) {
     return `<div><img src="https://image.tmdb.org/t/p/w185/${poster_path}"/>
         <p>${name}</p>
@@ -30,6 +40,7 @@ function genHTML(data, dataCredits) {
     let divElm = document.createElement("div");
 
     innerHTML += `<img src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
+    innerHTML += makeSwitch();
     innerHTML += `<h2>${data.original_title}</h2>`
     innerHTML += `<p> &#x2605;&nbsp;${data.vote_average} / 10</p>`
     innerHTML = genres(innerHTML, data);
@@ -42,6 +53,13 @@ function genHTML(data, dataCredits) {
     divElm.innerHTML = innerHTML;
 
     sectionElm.append(divElm);
+    sectionElm.querySelector("#switch").addEventListener("change",
+        function () {
+            let switchElm = sectionElm.querySelector("#switchbox")
+            console.log(switchElm.checked)
+            document.documentElement.setAttribute("data-dark", switchElm.checked)
+
+        })
 }
 
 function cast(innerHTML, dataCredits) {

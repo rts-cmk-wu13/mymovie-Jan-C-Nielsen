@@ -41,11 +41,7 @@ async function genHTML(dataNowPlaying, dataPopular) {
     let innerHTMLstr = "";
     console.log(dataNowPlaying);
     let divElm = document.createElement("div");
-    innerHTMLstr += `<h1>My movies</h1>
-        <label class="switch" id="switch" >
-            <input type="checkbox" id="switchbox" checked>
-                <span class="slider round"></span>
-            </label>`
+    innerHTMLstr = makeSwitch();
 
     innerHTMLstr += "<h2>Now showing</h2>"
     innerHTMLstr += MakeCard(dataNowPlaying, "nowplaying");
@@ -64,6 +60,15 @@ async function genHTML(dataNowPlaying, dataPopular) {
 
         })
     document.querySelector("body").append(sectionElm);
+}
+
+function makeSwitch() {
+   let switchHTML = `<h1>My movies</h1>
+        <label class="switch" id="switch" >
+            <input type="checkbox" id="switchbox" checked>
+                <span class="slider round"></span>
+            </label>`;
+    return switchHTML;
 }
 
 async function getMovies(apiUrl, options) {
