@@ -36,16 +36,6 @@ function MakeCard(data, className) {
     return cardHTML;
 };
 
-function addEventListeners() {
-    let switchElm = document.querySelector("#switch");
-    console.log("addEventListeners:" + switchElm);
-
-    switchElm.addEventListener("change", function () {
-        console.log(switchElm.checked);
-    });
-
-}
-
 async function genHTML(dataNowPlaying, dataPopular) {
 
     let innerHTMLstr = "";
@@ -53,7 +43,7 @@ async function genHTML(dataNowPlaying, dataPopular) {
     let divElm = document.createElement("div");
     innerHTMLstr += `<h1>My movies</h1>
         <label class="switch" id="switch" >
-            <input type="checkbox" checked>
+            <input type="checkbox" id="switchbox" checked>
                 <span class="slider round"></span>
             </label>`
 
@@ -66,11 +56,16 @@ async function genHTML(dataNowPlaying, dataPopular) {
     divElm.innerHTML = innerHTMLstr;
 
     sectionElm.append(divElm);
-    sectionElm.querySelector("#switch").addEventListener("change", function () { console.log("hej") })
+    sectionElm.querySelector("#switch").addEventListener("change",
+        function () {
+            let switchElm = sectionElm.querySelector("#switchbox")
+            console.log(switchElm.checked)
+            document.documentElement.setAttribute("data-dark", switchElm.checked)
+
+        })
     document.querySelector("body").append(sectionElm);
 }
 
-let switchElm;
 async function getMovies(apiUrl, options) {
     const NowPlaying = "now_playing?language=en-US&page=1";
     const Popular = "popular?language=en-US&page=1";
