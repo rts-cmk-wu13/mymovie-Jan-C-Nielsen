@@ -7,6 +7,8 @@
 html {
     color: light-dark(var( --dark-color), var(--light-color));
     background-color: light-dark(var(--light-color), var( --dark-color));
+    font-family: "Mulish";
+   
 }
 
 [data-dark="true"] {
@@ -18,9 +20,30 @@ html {
     color-scheme: light;
 }
 
+.headline{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+a {
+    text-decoration: none;
+    color: light-dark(var( --dark-color), var(--light-color));
+}
+
+.star{
+    color: darkorange;
+}
+
+.poster {
+    border-radius: 8px;
+    box-shadow: 10px 10px rgba(128, 128, 128, 0.1);
+}
+
 .nowplaying {
     display: flex;
     overflow-x: scroll;
+    overflow-x: hidden;
     gap: 2rem;
 }
 

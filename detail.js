@@ -15,8 +15,41 @@ const options = {
     }
 };
 
+
+/**
+* @param {string} key
+* @param {string} value
+*/
+function SaveLocalStorage(key, value) {
+    console.log(value);
+    localStorage.setItem(key, value);
+}
+
+/**
+* @param {string} key
+* @returns {string}
+*/
+function GetLocalStorage(key) {
+    return localStorage.getItem(key);
+}
+
+
 let sectionElm = document.createElement("section")
 
+function SetDarkMode() {
+    let Darkmode = GetLocalStorage("darkmode");
+    let CheckBox = document.querySelector("#switchbox");
+    console.log("Darkmode;" + Darkmode);
+    console.log("CheckBox:" + CheckBox);
+    if (Darkmode) {
+        document.documentElement.setAttribute("data-dark", Darkmode);
+        CheckBox.checked = Darkmode;
+    }
+    else {
+        document.documentElement.setAttribute("data-dark", false);
+        CheckBox.checked = false;
+    }
+}
 
 function makeSwitch() {
     let switchHTML = `
@@ -42,7 +75,7 @@ function genHTML(data, dataCredits) {
     innerHTML += `<img src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
     innerHTML += makeSwitch();
     innerHTML += `<h2>${data.original_title}</h2>`
-    innerHTML += `<p> &#x2605;&nbsp;${data.vote_average} / 10</p>`
+    innerHTML += `<p><span class="star">&#x2605;</span>&nbsp;${data.vote_average} / 10</p>`
     innerHTML = genres(innerHTML, data);
 
     innerHTML = info(innerHTML, data);
@@ -58,8 +91,9 @@ function genHTML(data, dataCredits) {
             let switchElm = sectionElm.querySelector("#switchbox")
             console.log(switchElm.checked)
             document.documentElement.setAttribute("data-dark", switchElm.checked)
-
+            SaveLocalStorage("darkmode", switchElm.checked);
         })
+    SetDarkMode();
 }
 
 function cast(innerHTML, dataCredits) {
@@ -92,7 +126,7 @@ function genres(innerHTML, data) {
     innerHTML += `<div>
     ${data.genres.map(function(t) {
         return `
-        <p>${t.name}</p>
+        <p class="genre">${t.name}</p>
       `;
     }).join("")}
   </div>
@@ -105,11 +139,11 @@ async function getMovie(apiUrl, urlCredits, options) {
 
     let x = await fetch(apiUrl, options);
     let data = await x.json();
-
+    console.log("url:")
+    console.log(data);
     x = await fetch(urlCredits, options);
     let dataCredits = await x.json();
-
-    console.log(dataCredits);
+   
     genHTML(data, dataCredits);
 }
 

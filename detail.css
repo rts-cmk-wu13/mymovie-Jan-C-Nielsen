@@ -7,6 +7,13 @@
 html {
     color: light-dark(var( --dark-color), var(--light-color));
     background-color: light-dark(var(--light-color), var( --dark-color));
+    font-family: "Mulish";
+    overflow: hidden; /* Hide scrollbars */
+}
+
+
+.star {
+    color: darkorange;
 }
 
 [data-dark="true"] {
