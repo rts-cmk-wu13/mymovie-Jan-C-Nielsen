@@ -5,6 +5,7 @@ const url = 'https://api.themoviedb.org/3/movie/';
 const urlGenre = 'https://api.themoviedb.org/3/genre/movie/list?language=en';
 
 let genreMap = new Object();
+let switchElm;
 
 const options = {
   method: 'GET',
@@ -34,18 +35,19 @@ function GetLocalStorage(key) {
   
 let sectionElm = document.createElement("section");
 
-function SetDarkMode() {
+function SetDarkMode(switchElm) {
     let Darkmode = GetLocalStorage("darkmode");
-    let switchElm = sectionElm.querySelector("#switchbox")
-   // console.log("Darkmode;" + Darkmode);
-   // console.log("CheckBox:" + switchElm);
+     switchElm = document.querySelector("#switchbox")
+   console.log("Darkmode;" + Darkmode);
+   console.log("CheckBox:" + switchElm);
     if (Darkmode) {
-        document.documentElement.setAttribute("data-dark", Darkmode);
-        switchElm.checked = Darkmode;
+        document.documentElement.setAttribute("data-dark", true);
+        switchElm.checked = true;
     }
     else {
         document.documentElement.setAttribute("data-dark", false);
         switchElm.checked = false;
+        console.log("switchElm.checked "+switchElm.checked);
     }
 }
 
@@ -65,9 +67,8 @@ function genres(innerHTML, data) {
 
 function mapGenreIdToHtml(ids)
 {
-      console.log("genre ids:" + ids);
-    
-    return ids.map(id => `<p>${genreMap[id]}</p>`).join("");
+      //console.log("genre ids:" + ids);
+    return ids.map(id =>`<p class="genre">${genreMap[id]}</p>`).join("");
 }
 
 async function MakeCard(data, className) {
@@ -76,13 +77,15 @@ async function MakeCard(data, className) {
         <div class="${className}">
         ${data.results.map(function (t) {
             return `
-        <a href="detail.html?id=${t.id}">
+        <a  href="detail.html?id=${t.id}">
         <article class="${className}__content">
             <img src="https://image.tmdb.org/t/p/w185/${t.poster_path}" class="poster"></img>
             <div>
             <h3>${t.original_title}</h3>
-            <p> <span class="star">&#x2605;</span>&nbsp;${t.vote_average}/10 IMDb</p>
+            <p> <span class="star">&#x2605;</span>&nbsp;${Math.round(t.vote_average*10)/10}/10 IMDb</p>
+            <div class="genres">
             ${(className === "popular") ? mapGenreIdToHtml(t.genre_ids) : "" }
+            <div>
             </div>
         </article>
             </a>
@@ -111,17 +114,18 @@ async function genHTML(dataNowPlaying, dataPopular) {
 
     sectionElm.append(divElm);
     
-    sectionElm.querySelector("#switch").addEventListener("change",
+    switchElm =  sectionElm.querySelector("#switch");
+    switchElm.addEventListener("change",
         function () {
-            let switchElm = sectionElm.querySelector("#switchbox")
-          //  console.log(switchElm.checked)
+            let switchElm = document.querySelector("#switchbox")
+            console.log("addEventListener"+switchElm.checked)
             document.documentElement.setAttribute("data-dark", switchElm.checked);
             SaveLocalStorage("darkmode", switchElm.checked);
 
         })
 
     document.querySelector("body").append(sectionElm);
-    SetDarkMode();
+    SetDarkMode(switchElm);
 }
 
 function makeSwitch() {
@@ -141,20 +145,19 @@ async function getMovies(apiUrl, options) {
     let Genres = await x.json();
     //console.log(Genres);
      Genres.genres.map(function (g) {
-        console.log(g.id);
+       // console.log(g.id);
          genreMap[g.id] = g.name;
-         console.log(genreMap[g.id]);
+        // console.log(genreMap[g.id]);
     })
    
 
     let y = await fetch(apiUrl + NowPlaying , options);
     let dataNowPlaying = await y.json();
    // console.log(dataNowPlaying);
-   // let Genres = await x.json();
     //console.log(Genres);
     let z = await fetch(apiUrl + Popular, options);
     let dataPopular = await z.json();
-    console.log(dataPopular.results[0].genre_ids);
+    //console.log(dataPopular);
     await genHTML(dataNowPlaying, dataPopular);
   
     return;

@@ -8,8 +8,13 @@ html {
     color: light-dark(var( --dark-color), var(--light-color));
     background-color: light-dark(var(--light-color), var( --dark-color));
     font-family: "Mulish";
-   
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
+
+ html::-webkit-scrollbar {
+        display: none;
+    }
 
 [data-dark="true"] {
     color-scheme: dark;
@@ -47,11 +52,32 @@ a {
     gap: 2rem;
 }
 
-.popular {
-    display: block;
+
+.popular__link {
+    padding-bottom: 1em;
 }
+
+.popular {
+    padding-bottom: 1em;
+}
+
+
 
 .popular__content {
     display: flex;
     gap: 2rem;
+}
+
+.genres{
+    display:flex;
+    justify-content:space-between;
+}
+
+.genre {
+    padding:4px;
+    font-size: 10px;
+    background-color: #DBE3FF;
+    color: #88A4E8;
+    border-radius:0.5em;
+    text-align:center;
 }

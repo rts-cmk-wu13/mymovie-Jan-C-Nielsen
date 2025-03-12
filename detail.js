@@ -6,7 +6,7 @@ let id = params.get("id");
 //console.log(url);
 const urlCredits = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`;
 
-const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US&page=1`;
+const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US&page=1&append_to_response=videos,release_dates`
 const options = {
     method: 'GET',
     headers: {
@@ -21,7 +21,7 @@ const options = {
 * @param {string} value
 */
 function SaveLocalStorage(key, value) {
-    console.log(value);
+   // console.log(value);
     localStorage.setItem(key, value);
 }
 
@@ -39,8 +39,8 @@ let sectionElm = document.createElement("section")
 function SetDarkMode() {
     let Darkmode = GetLocalStorage("darkmode");
     let CheckBox = document.querySelector("#switchbox");
-    console.log("Darkmode;" + Darkmode);
-    console.log("CheckBox:" + CheckBox);
+   // console.log("Darkmode;" + Darkmode);
+   // console.log("CheckBox:" + CheckBox);
     if (Darkmode) {
         document.documentElement.setAttribute("data-dark", Darkmode);
         CheckBox.checked = Darkmode;
@@ -69,13 +69,13 @@ function castCard(name, poster_path) {
 function genHTML(data, dataCredits) {
 
     let innerHTML = "";
-    console.log(data);
+   // console.log(data);
     let divElm = document.createElement("div");
 
+    innerHTML += `<div class="headline"><a href="index.html" class="back">&#129032;</a>${makeSwitch()}</div>`;
     innerHTML += `<img src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
-    innerHTML += makeSwitch();
     innerHTML += `<h2>${data.original_title}</h2>`
-    innerHTML += `<p><span class="star">&#x2605;</span>&nbsp;${data.vote_average} / 10</p>`
+    innerHTML += `<p><span class="star">&#x2605;</span>&nbsp;${Math.round(data.vote_average*10)/10} / 10</p>`
     innerHTML = genres(innerHTML, data);
 
     innerHTML = info(innerHTML, data);
@@ -89,10 +89,11 @@ function genHTML(data, dataCredits) {
     sectionElm.querySelector("#switch").addEventListener("change",
         function () {
             let switchElm = sectionElm.querySelector("#switchbox")
-            console.log(switchElm.checked)
+            //console.log(switchElm.checked)
             document.documentElement.setAttribute("data-dark", switchElm.checked)
             SaveLocalStorage("darkmode", switchElm.checked);
         })
+  
     SetDarkMode();
 }
 
@@ -114,16 +115,21 @@ function description(innerHTML, data) {
 }
 
 function info(innerHTML, data) {
-    innerHTML += `<div>
-<span>${data.runtime}<span>
+    innerHTML += `<div class="info">
+ <span>Length<span>
+<span>Language<span>
+<span>Rating<span>
+</div>`;
+    innerHTML += `<div class="info">
+ <span>${Math.floor(data.runtime/60)}h${data.runtime % 60}min<span>
 <span>${data.original_language}<span>
 <span>${data.runtime}<span>
-<div>`;
+</div>`;
     return innerHTML;
 }
 
 function genres(innerHTML, data) {
-    innerHTML += `<div>
+    innerHTML += `<div class="genres">
     ${data.genres.map(function(t) {
         return `
         <p class="genre">${t.name}</p>

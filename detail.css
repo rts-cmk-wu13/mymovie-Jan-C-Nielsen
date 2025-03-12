@@ -8,7 +8,25 @@ html {
     color: light-dark(var( --dark-color), var(--light-color));
     background-color: light-dark(var(--light-color), var( --dark-color));
     font-family: "Mulish";
-    overflow: hidden; /* Hide scrollbars */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+    html::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+
+a {
+    text-decoration: none;
+   color:white;
+   font-size:16px;
 }
 
 
@@ -26,8 +44,54 @@ html {
 }
 
 
+.headline {
+    width: 450px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3em;
+    margin-left: 25px;
+    /*margin-right: 1em;*/
+}
+
+    .headline span{
+        font-size: 24px;
+        color:white;
+    }
+
+    .switch {
+        /*  position:fixed;*/
+    }
+
+.info{
+    
+    display: flex;
+    justify-content:left;
+    align-content:space-between;
+}
+
+.info span{
+    width:30%;
+}
+
 .castList {
     display: flex;
-    overflow-x: scroll;
+   
     gap: 2rem;
+}
+
+
+.genres{
+    display:flex;
+    justify-content:space-between;
+}
+
+.genre {
+    padding:4px;
+    font-size: 10px;
+    background-color: #DBE3FF;
+    color: #88A4E8;
+    border-radius:0.5em;
+    text-align:center;
 }
