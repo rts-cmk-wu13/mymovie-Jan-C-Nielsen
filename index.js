@@ -15,6 +15,8 @@ const options = {
   }
 };
 
+let browserDark = window.matchMedia("prefers-color-scheme: dark").matches;
+console.log(browserDark);
 
 /**
 * @param {string} key
@@ -37,10 +39,10 @@ let sectionElm = document.createElement("section");
 
 function SetDarkMode(switchElm) {
     let Darkmode = GetLocalStorage("darkmode");
-     switchElm = document.querySelector("#switchbox")
+    switchElm = document.querySelector("#switchbox")
    console.log("Darkmode;" + Darkmode);
    console.log("CheckBox:" + switchElm);
-    if (Darkmode) {
+    if (Darkmode === "true" || browserDark) {
         document.documentElement.setAttribute("data-dark", true);
         switchElm.checked = true;
     }
@@ -149,9 +151,8 @@ async function getMovies(apiUrl, options) {
          genreMap[g.id] = g.name;
         // console.log(genreMap[g.id]);
     })
-   
 
-    let y = await fetch(apiUrl + NowPlaying , options);
+    let y = await fetch(apiUrl + NowPlaying, options);
     let dataNowPlaying = await y.json();
    // console.log(dataNowPlaying);
     //console.log(Genres);

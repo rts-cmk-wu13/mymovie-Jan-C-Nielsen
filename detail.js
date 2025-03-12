@@ -15,6 +15,8 @@ const options = {
     }
 };
 
+let browserDark = window.matchMedia("prefers-color-scheme: dark").matches;
+console.log(browserDark);
 
 /**
 * @param {string} key
@@ -41,9 +43,9 @@ function SetDarkMode() {
     let CheckBox = document.querySelector("#switchbox");
    // console.log("Darkmode;" + Darkmode);
    // console.log("CheckBox:" + CheckBox);
-    if (Darkmode) {
-        document.documentElement.setAttribute("data-dark", Darkmode);
-        CheckBox.checked = Darkmode;
+    if (Darkmode==="true") {
+        document.documentElement.setAttribute("data-dark", true);
+        CheckBox.checked = true;
     }
     else {
         document.documentElement.setAttribute("data-dark", false);
@@ -116,17 +118,18 @@ function description(innerHTML, data) {
 
 function info(innerHTML, data) {
     innerHTML += `<div class="info">
- <span>Length<span>
-<span>Language<span>
-<span>Rating<span>
+ <span>Length</span>
+<span>Language</span>
+<span>Rating</span>
 </div>`;
     innerHTML += `<div class="info">
- <span>${Math.floor(data.runtime/60)}h${data.runtime % 60}min<span>
-<span>${data.original_language}<span>
-<span>${data.runtime}<span>
+ <span>${Math.floor(data.runtime / 60)}h${data.runtime % 60}min</span>
+<span>${data.original_language}</span>
+<span>---</span>
 </div>`;
     return innerHTML;
 }
+
 
 function genres(innerHTML, data) {
     innerHTML += `<div class="genres">
