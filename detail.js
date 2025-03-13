@@ -15,6 +15,9 @@ const options = {
     }
 };
 
+
+console.log(countries["en"].name)
+
 let browserDark = window.matchMedia("prefers-color-scheme: dark").matches;
 console.log(browserDark);
 
@@ -75,7 +78,7 @@ function genHTML(data, dataCredits) {
     let divElm = document.createElement("div");
 
     innerHTML += `<div class="headline"><a href="index.html" class="back">&#129032;</a>${makeSwitch()}</div>`;
-    innerHTML += `<img src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
+    innerHTML += `<img class="headimg" src="https://image.tmdb.org/t/p/w500/${data.backdrop_path}"/>`
     innerHTML += `<h2>${data.original_title}</h2>`
     innerHTML += `<p><span class="star">&#x2605;</span>&nbsp;${Math.round(data.vote_average*10)/10} / 10</p>`
     innerHTML = genres(innerHTML, data);
@@ -124,7 +127,7 @@ function info(innerHTML, data) {
 </div>`;
     innerHTML += `<div class="info">
  <span>${Math.floor(data.runtime / 60)}h${data.runtime % 60}min</span>
-<span>${data.original_language}</span>
+<span>${countries[data.original_language].name}</span>
 <span>---</span>
 </div>`;
     return innerHTML;

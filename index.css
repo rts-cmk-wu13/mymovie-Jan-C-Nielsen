@@ -52,25 +52,20 @@ a {
     gap: 2rem;
 }
 
-
-.popular__link {
-    padding-bottom: 1em;
-}
-
-.popular {
-    padding-bottom: 1em;
-}
-
-
-
 .popular__content {
     display: flex;
     gap: 2rem;
+    margin-bottom: 2em;
+    
 }
 
-.genres{
-    display:flex;
-    justify-content:space-between;
+    .popular__content h3 {
+        max-width: 15em;
+    }
+
+.genres {
+    display: flex;
+    justify-content: space-between;
 }
 
 .genre {

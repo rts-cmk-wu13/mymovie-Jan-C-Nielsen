@@ -15,6 +15,7 @@ const options = {
   }
 };
 
+
 let browserDark = window.matchMedia("prefers-color-scheme: dark").matches;
 console.log(browserDark);
 
@@ -73,26 +74,38 @@ function mapGenreIdToHtml(ids)
     return ids.map(id =>`<p class="genre">${genreMap[id]}</p>`).join("");
 }
 
-async function MakeCard(data, className) {
-  //  console.log("data:" + data.results);
+
+ function MakeCard(data, className) {
+     console.log("data:" + data.results);
     let cardHTML = `
-        <div class="${className}">
         ${data.results.map(function (t) {
-            return `
-        <a  href="detail.html?id=${t.id}">
+        return `
+        <a class="${className}__link" href="detail.html?id=${t.id}">
         <article class="${className}__content">
             <img src="https://image.tmdb.org/t/p/w185/${t.poster_path}" class="poster"></img>
             <div>
             <h3>${t.original_title}</h3>
-            <p> <span class="star">&#x2605;</span>&nbsp;${Math.round(t.vote_average*10)/10}/10 IMDb</p>
+            <p> <span class="star">&#x2605;</span>&nbsp;${Math.round(t.vote_average * 10) / 10}/10 IMDb</p>
             <div class="genres">
-            ${(className === "popular") ? mapGenreIdToHtml(t.genre_ids) : "" }
+            ${(className === "popular") ? mapGenreIdToHtml(t.genre_ids) : ""}
             <div>
             </div>
         </article>
             </a>
           `;
-    }).join("")}
+    }).join("")}`
+     
+    ;
+    return cardHTML;
+};
+
+
+
+async function MakeCards(data, className) {
+  //  console.log("data:" + data);
+    let cardHTML = `
+        <div class="${className}">
+        ${MakeCard(data, className) }
       </div>
     `;
     return cardHTML;
@@ -107,10 +120,10 @@ async function genHTML(dataNowPlaying, dataPopular) {
     innerHTMLstr += makeSwitch() +`</div>`;
 
     innerHTMLstr += "<h2>Now showing</h2>"
-    innerHTMLstr += await MakeCard(dataNowPlaying, "nowplaying");
+    innerHTMLstr += await MakeCards(dataNowPlaying, "nowplaying");
 
     innerHTMLstr += "<h2>Popular</h2>"
-    innerHTMLstr += await MakeCard(dataPopular, "popular");
+    innerHTMLstr += await MakeCards(dataPopular, "popular");
 
     divElm.innerHTML = innerHTMLstr;
 
@@ -123,7 +136,6 @@ async function genHTML(dataNowPlaying, dataPopular) {
             console.log("addEventListener"+switchElm.checked)
             document.documentElement.setAttribute("data-dark", switchElm.checked);
             SaveLocalStorage("darkmode", switchElm.checked);
-
         })
 
     document.querySelector("body").append(sectionElm);
@@ -158,7 +170,7 @@ async function getMovies(apiUrl, options) {
     //console.log(Genres);
     let z = await fetch(apiUrl + Popular, options);
     let dataPopular = await z.json();
-    //console.log(dataPopular);
+    console.log(dataPopular);
     await genHTML(dataNowPlaying, dataPopular);
   
     return;
