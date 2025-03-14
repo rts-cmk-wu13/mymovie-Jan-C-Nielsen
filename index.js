@@ -41,8 +41,8 @@ let sectionElm = document.createElement("section");
 function SetDarkMode(switchElm) {
     let Darkmode = GetLocalStorage("darkmode");
     switchElm = document.querySelector("#switchbox")
-   console.log("Darkmode;" + Darkmode);
-   console.log("CheckBox:" + switchElm);
+  // console.log("Darkmode;" + Darkmode);
+  // console.log("CheckBox:" + switchElm);
     if (Darkmode === "true" || browserDark) {
         document.documentElement.setAttribute("data-dark", true);
         switchElm.checked = true;

@@ -47,8 +47,6 @@ a {
 
 .nowplaying {
     display: flex;
-    overflow-x: scroll;
-    overflow-x: hidden;
     gap: 2rem;
 }
 
